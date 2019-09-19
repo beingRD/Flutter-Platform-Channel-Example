@@ -4,7 +4,7 @@ A new Flutter project which displays Battery Levels & Charging status of a mobil
 
 ## Snapshot
 
-![](.gif)
+![](battery.gif)
 
 ## Getting Started
 
