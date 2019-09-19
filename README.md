@@ -1,6 +1,10 @@
-# platformchannel
+# Platform-Channel Example 
 
-A new Flutter project.
+A new Flutter project which displays Battery Levels & Charging status of a mobile device.
+
+## Snapshot
+
+![](.gif)
 
 ## Getting Started
 
