@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -9,10 +8,12 @@ class PlatformChannel extends StatefulWidget {
 }
 
 class _PlatformChannelState extends State<PlatformChannel> {
+  IconData iconSwitch = Icons.battery_unknown;
+
   static const MethodChannel methodChannel =
-      MethodChannel('samples.flutter.io/battery');
+      MethodChannel('beingRD.flutter.io/battery');
   static const EventChannel eventChannel =
-      EventChannel('samples.flutter.io/charging');
+      EventChannel('beingRD.flutter.io/charging');
 
   String _batteryLevel = 'Battery level: unknown.';
   String _chargingStatus = 'Battery status: unknown.';
@@ -21,7 +22,7 @@ class _PlatformChannelState extends State<PlatformChannel> {
     String batteryLevel;
     try {
       final int result = await methodChannel.invokeMethod('getBatteryLevel');
-      batteryLevel = 'Battery level: $result%.';
+      batteryLevel = '''Battery level: $result% :"))''';
     } on PlatformException {
       batteryLevel = 'Failed to get battery level.';
     }
@@ -40,6 +41,10 @@ class _PlatformChannelState extends State<PlatformChannel> {
     setState(() {
       _chargingStatus =
           "Battery status: ${event == 'charging' ? '' : 'dis'}charging.";
+
+      iconSwitch = (event == 'charging')
+          ? Icons.battery_charging_full
+          : Icons.battery_full;
     });
   }
 
@@ -51,25 +56,54 @@ class _PlatformChannelState extends State<PlatformChannel> {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          Column(
+    return MaterialApp(
+      theme: ThemeData.dark().copyWith(
+        textTheme: TextTheme(
+          body1: TextStyle(
+            color: Colors.amber,
+            fontSize: 26.0,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        scaffoldBackgroundColor: Colors.black38,
+        appBarTheme: AppBarTheme(
+          textTheme: TextTheme(
+            title: TextStyle(
+              color: Colors.amber,
+              fontSize: 20.0,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          color: Colors.black38,
+          elevation: 0.0,
+        ),
+      ),
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            'Custom Platform-Channel Example',
+          ),
+        ),
+        body: Center(
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(_batteryLevel, key: const Key('Battery level label')),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: RaisedButton(
-                  child: const Text('Refresh'),
-                  onPressed: _getBatteryLevel,
+              FlatButton(
+                onPressed: _getBatteryLevel,
+                child: Icon(
+                  iconSwitch,
+                  size: 290.0,
+                  color: Colors.amber,
                 ),
               ),
+              SizedBox(
+                height: 20.0,
+              ),
+              Text(_chargingStatus),
             ],
           ),
-          Text(_chargingStatus),
-        ],
+        ),
       ),
     );
   }

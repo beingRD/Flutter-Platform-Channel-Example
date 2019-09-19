@@ -13,7 +13,7 @@
       (FlutterViewController*)self.window.rootViewController;
 
   FlutterMethodChannel* batteryChannel = [FlutterMethodChannel
-      methodChannelWithName:@"samples.flutter.io/battery"
+      methodChannelWithName:@"beingRD.flutter.io/battery"
             binaryMessenger:controller];
   __weak typeof(self) weakSelf = self;
   [batteryChannel setMethodCallHandler:^(FlutterMethodCall* call,
@@ -33,7 +33,7 @@
   }];
 
   FlutterEventChannel* chargingChannel = [FlutterEventChannel
-      eventChannelWithName:@"samples.flutter.io/charging"
+      eventChannelWithName:@"beingRD.flutter.io/charging"
            binaryMessenger:controller];
   [chargingChannel setStreamHandler:self];
   return [super application:application didFinishLaunchingWithOptions:launchOptions];
